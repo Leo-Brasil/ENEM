@@ -1,0 +1,10 @@
+/*estilo css*/
+section[data-testid="stSidebar"] {
+    background-color: #4391f8;
+    color: rgba(0, 0, 0, 0.61);
+}
+
+div[data-testid="stMarkdownContainer"] > p {    
+        color: #000000;
+        font-size: 16px;
+}

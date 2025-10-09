@@ -1,0 +1,9 @@
+# Ignorar ambiente virtual
+projeto-enem/
+
+# Ignorar arquivos comuns de Python
+__pycache__/
+*.pyc
+
+# Ignorar arquivos de configuração do VS Code (opcional)
+.vscode/
