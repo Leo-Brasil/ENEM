@@ -26,6 +26,9 @@ Status do Projeto: Em desenvolvimento
 Última atualização: Outubro de 2025
 Versão inicial com estrutura básica e teste
 
+Caso queira ver como o projeto ficou, acesse:
+https://estudoenem.streamlit.app/
+
 Licença: Este projeto está licenciado sob a MIT License.
 
 Autor
