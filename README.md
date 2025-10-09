@@ -18,7 +18,7 @@ Para executar o projeto na sua máquina local, siga os passos abaixo:
     pip install -r requirements.txt
 
 3. Execute o aplicativo:
-    python app.py
+    streamlit run app.py
 
 Certifique-se de estar com o Python instalado e configurado corretamente no seu ambiente.
 
@@ -26,7 +26,7 @@ Status do Projeto: Em desenvolvimento
 Última atualização: Outubro de 2025
 Versão inicial com estrutura básica e teste
 
-LicençaEste projeto está licenciado sob a MIT License.
+Licença: Este projeto está licenciado sob a MIT License.
 
 Autor
 Leonardo Brasil
