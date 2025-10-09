@@ -7,3 +7,50 @@ __pycache__/
 
 # Ignorar arquivos de configuração do VS Code (opcional)
 .vscode/
+
+# Dependências
+*.egg
+*.egg-info/
+dist/
+build/
+*.whl
+
+# Arquivos de log e temporários
+*.log
+*.tmp
+*.bak
+
+# Arquivos de sistema
+.DS_Store
+Thumbs.db
+
+# Arquivos de ambiente
+.env
+.env.*
+
+# Banco de dados local
+*.sqlite3
+*.db
+
+# Arquivos de execução
+*.exe
+*.dll
+
+# Arquivos de testes
+coverage.xml
+htmlcov/
+.tox/
+.nox/
+
+# Arquivos de Streamlit (se estiver usando)
+.streamlit/
+
+# Arquivos de Jupyter
+.ipynb_checkpoints/
+
+# Arquivos de pacotes
+*.tar.gz
+*.zip
+
+# Arquivos de configuração pessoal
+*.idea/
