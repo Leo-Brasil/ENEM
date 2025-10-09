@@ -34,7 +34,7 @@ carregarestilo('estilo.css')
 with st.sidebar:
     st.image('enem.png',width=180)
     ano = st.sidebar.selectbox(
-        'Qual ano você gostaria de receber o JSON do ENEM? (dados de 2015 até 2023)',
+        'Qual ano você gostaria de visualizar a questões do ENEM? (dados de 2015 até 2023)',
         list(range(2015,2024)),
         index = 0,
         key = 'ano',
