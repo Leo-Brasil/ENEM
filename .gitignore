@@ -59,5 +59,4 @@ htmlcov/
 *.idea/
 
 # Arquivos de base de dados
-microdados2023.csv
 dicionario.json
