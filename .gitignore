@@ -57,4 +57,5 @@ htmlcov/
 
 # Arquivos de base de dados
 dados_reduzidos.csv
+MICRODADOS_ENEM_2023.csv
 dicionario.json
