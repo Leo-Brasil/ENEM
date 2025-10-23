@@ -21,7 +21,7 @@ Caso deseje reproduzir o projeto com os dados completos, você pode baixar os mi
 
 ---
 
-## 📦 Tentativa com arquivo ZIP
+## Tentativa com arquivo ZIP
 
 Como alternativa para contornar o limite de 100 MB imposto pelo GitHub, realizei uma compressão dos dados em um arquivo `dados_reduzidos.zip`, contendo o CSV com mais registros do ENEM 2023.
 
