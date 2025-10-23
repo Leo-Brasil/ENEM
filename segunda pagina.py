@@ -1,260 +1,129 @@
-import streamlit as st
 import pandas as pd
-from streamlit_extras.add_vertical_space import add_vertical_space
-from streamlit_avatar import avatar
-from streamlit_card import card
-from streamlit_extras.chart_annotations import get_annotations_chart
-from streamlit_extras.chart_container import chart_container
-import altair as alt
 import numpy as np
-from streamlit_extras.concurrency_limiter import concurrency_limiter
-import time
-from streamlit_extras.customize_running import center_running
-from streamlit_faker import get_streamlit_faker
-from streamlit_extras.metric_cards import style_metric_cards
-from streamlit_extras.stodo import to_do
-from streamlit_extras.stoggle import stoggle
-from streamlit_extras.echo_expander import echo_expander
+import matplotlib.pyplot as plt
+import seaborn as sns
+import os
+import streamlit as st
+import json
 
-
-# Deixando as informações mais distribuidas
-st.set_page_config(layout="wide")
-
-# Adicionado imagem a segunda pagina
-with st.sidebar:
-    st.image('laboratorio.png', width=200)
-
-# Função carregar estilo externo
-def carregarestilo(caminho):
-    with open(caminho) as f:
-        st.markdown(f"<style>{f.read()}</style",unsafe_allow_html=True)
-
-# Aplicando o CSS
-carregarestilo('estilo.css')
-
-def example():
-    avatar(
-        [
-            {
-                "url": "https://picsum.photos/id/237/300/300",
-                "size": 40,
-                "title": "Sam",
-                "caption": "hello",
-                "key": "avatar1",
-            },
-            {
-                "url": "https://picsum.photos/id/238/300/300",
-                "size": 40,
-                "title": "Bob",
-                "caption": "happy",
-                "key": "avatar2",
-            },
-            {
-                "url": "https://picsum.photos/id/23/300/300",
-                "size": 40,
-                "title": "Rick",
-                "caption": "Bye",
-                "key": "avatar3",
-            },
-        ]
-    )
-example()
-
-def example2():
-    card(
-        title="Hello World!",
-        text="Some description",
-        image="http://placekitten.com/300/250",
-        url="https://www.google.com",
-    )
-
-example2()
-
-def get_data() -> pd.DataFrame:
-    # Exemplo de dados fictícios
-    return pd.DataFrame({
-        'date': pd.date_range(start='2007-01-01', periods=100, freq='M'),
-        'GOOG': pd.Series(range(100)) + 500,
-        'AAPL': pd.Series(range(100)) + 300,
-    })
-
-def get_chart(data: pd.DataFrame) -> alt.Chart:
-    base = alt.Chart(data).transform_fold(
-        ['GOOG', 'AAPL'],
-        as_=['Company', 'Price']
-    ).mark_line().encode(
-        x='date:T',
-        y='Price:Q',
-        color='Company:N'
-    )
-    return base
-
-def get_annotations_chart(annotations):
-    annotations_df = pd.DataFrame(annotations, columns=['date', 'note'])
-    annotations_df['date'] = pd.to_datetime(annotations_df['date'])
-
-    return alt.Chart(annotations_df).mark_text(
-        align='left', baseline='middle', dx=5
-    ).encode(
-        x='date:T',
-        y=alt.value(500),
-        text='note'
-    )
-
-def example3() -> None:
-    data = get_data()
-    chart = get_chart(data=data)
-
-    chart += get_annotations_chart([
-        ("2008-03-01", "Pretty good day for GOOG"),
-        ("2007-12-01", "Something's going wrong for GOOG & AAPL"),
-        ("2008-11-01", "Market starts again thanks to..."),
-        ("2009-12-01", "Small crash for GOOG after..."),
-    ])
-
-    st.altair_chart(chart, use_container_width=True)
-
-example3()
-
-def get_random_data():
-    return pd.DataFrame(
-        np.random.randn(20, 3),
-        columns=['a', 'b', 'c']
-    )
-
-def chart_container(data):
-    return st.container()
-
-def example4():
-    chart_data = get_random_data()
-    with chart_container(chart_data):
-        st.write("Here's a cool chart")
-        st.area_chart(chart_data)
-
-example4()
-
-def example5():
-    @concurrency_limiter(max_concurrency=1)
-    def heavy_computation():
-        st.write("Heavy computation")
-        progress_text = "Operation in progress. Please wait."
-        my_bar = st.progress(0, text=progress_text)
-
-        for percent_complete in range(100):
-            time.sleep(0.15)
-            my_bar.progress(percent_complete + 1, text=progress_text)
-        st.write("END OF Heavy computation")
-        return 42
-
-    my_button = st.button("Run heavy computation")
-
-    if my_button:
-        heavy_computation()
-
-example5()
-
-def example6():
-    click = st.button("Observe where the 🏃‍♂️ running widget is now!")
-    if click:
-        center_running()
-        time.sleep(2)
-
-example6()
-
-def example7():
-    fake = get_streamlit_faker(seed=42)
-    fake.markdown()
-    fake.info(icon="💡", body="You can also pass explicit parameters!")
-    fake.selectbox()
-    fake.slider()
-    fake.metric()
-    fake.altair_chart()
-    
-example7()
-
-def example8():
-    col1, col2, col3 = st.columns(3)
-
-    col1.metric(label="Gain", value=5000, delta=1000)
-    col2.metric(label="Loss", value=5000, delta=-1000)
-    col3.metric(label="No Change", value=5000, delta=0)
-
-    style_metric_cards()
-example8()
-
-def example9():
-    to_do(
-        [(st.write, "☕ Take my coffee")],
-        "coffee",
-    )
-    to_do(
-        [(st.write, "🥞 Have a nice breakfast")],
-        "pancakes",
-    )
-    to_do(
-        [(st.write, ":train: Go to work!")],
-        "work",
-    )
-example9()
-
-def example10():
-    stoggle(
-        "Click me!",
-        """🥷 Surprise! Here's some additional content""",
-    )
-example10()
-
-
-cols = st.columns(3, gap="medium")
-with cols[0]:
-    avatar(
-        [
-            {
-                "url": "https://picsum.photos/id/237/300/300",
-                "size": 40,
-                "title": "Sam",
-                "caption": "hello",
-                "key": "avatar1",
-            }
-        ]
-    )
-with cols[1]:
-    avatar(
-        [
-            {
-                "url": "https://picsum.photos/id/238/300/300",
-                "size": 40,
-                "title": "Bob",
-                "caption": "happy",
-                "key": "avatar2",
-            }
-        ]
-    )
-with cols[2]:
-    avatar(
-        [
-            {
-                "url": "https://picsum.photos/id/23/300/300",
-                "size": 40,
-                "title": "Rick",
-                "caption": "Bye",
-                "key": "avatar3",
-            }
+@st.cache_data
+def carregar_processar_dados():
+    microdados = pd.read_csv('microdados2023.csv', encoding='latin1', sep=';')
+    microdados = microdados.drop(columns=[
+        'TX_GABARITO_CN',
+        'TX_GABARITO_CH',
+        'TX_GABARITO_LC',
+        'TX_GABARITO_MT',
+        'TX_RESPOSTAS_CN',
+        'TX_RESPOSTAS_CH',
+        'TX_RESPOSTAS_LC',
+        'TX_RESPOSTAS_MT',
+        'NU_NOTA_COMP1',
+        'NU_NOTA_COMP2',
+        'NU_NOTA_COMP3',
+        'NU_NOTA_COMP4',
+        'NU_NOTA_COMP5',
+        'NU_NOTA_REDACAO',
+        'TP_STATUS_REDACAO',
+        'CO_PROVA_CN',
+        'CO_PROVA_CH',
+        'CO_PROVA_LC',
+        'CO_PROVA_MT'
         ]
     )
 
-with echo_expander(): #Serve apenas para codigo
-    st.write('Teste de Quadro Expandido e codigo')
+    microdados = microdados.rename(columns={
+        'NU_INSCRICAO': 'Numero Inscricao',
+        'NU_ANO': 'Ano Enem',
+        'TP_FAIXA_ETARIA': 'Faixa Etaria',
+        'TP_SEXO': 'Sexo',
+        'TP_ESTADO_CIVIL': 'Estado Civil',
+        'TP_COR_RACA': 'Raca',
+        'TP_NACIONALIDADE': 'Nacionalidade',
+        'TP_ST_CONCLUSAO': 'Situacao Conclusao EM',
+        'TP_ANO_CONCLUIU': 'Ano Conclusao EM',
+        'TP_ESCOLA': 'Escola',
+        'TP_ENSINO': 'Tipo EM',
+        'IN_TREINEIRO': 'Treineiro',
+        'CO_MUNICIPIO_ESC': 'Codigo Municipio Escola',
+        'NO_MUNICIPIO_ESC': 'Nome Municipio Escola',
+        'CO_UF_ESC': 'Codigo Federacao Escola',
+        'SG_UF_ESC': 'Sigla Federacao Escola',
+        'TP_DEPENDENCIA_ADM_ESC': 'Dependencia ADM Escola',
+        'TP_LOCALIZACAO_ESC': 'Localizacao Escola',
+        'TP_SIT_FUNC_ESC': 'Situacao Funcionamento Escola',
+        'CO_MUNICIPIO_PROVA': 'Codigo Municipio Prova',
+        'NO_MUNICIPIO_PROVA': 'Nome Municipio Prova',
+        'CO_UF_PROVA': 'Codigo Federacao Prova',
+        'SG_UF_PROVA': 'Sigla Federacao Prova',
+        'TP_PRESENCA_CN': 'Presenca Prova Ciências da Natureza',
+        'TP_PRESENCA_CH': 'Presenca Prova Ciências Humanas',
+        'TP_PRESENCA_LC': 'Presenca Prova Linguagens e Códigos',
+        'TP_PRESENCA_MT': 'Presenca Prova Matemática',
+        'NU_NOTA_CN': 'Nota Ciências da Natureza',
+        'NU_NOTA_CH': 'Nota Ciências Humanas',
+        'NU_NOTA_LC': 'Nota Linguagens e Códigos',
+        'NU_NOTA_MT': 'Nota Matemática',
+        'TP_LINGUA': 'Língua Estrangeira',
+        'Q001': 'Até que série seu pai, ou o homem responsável por você, estudou?',
+        'Q002': 'Até que série sua mãe, ou a mulher responsável por você, estudou?',
+        'Q003': 'A partir da apresentação de algumas ocupações divididas em grupos ordenados, indique o grupo que contempla a ocupação mais próxima da ocupação do seu pai ou do homem responsável por você.',
+        'Q004': 'A partir da apresentação de algumas ocupações divididas em grupos ordenados, indique o grupo que contempla a ocupação mais próxima da ocupação da sua mãe ou da mulher responsável por você.',
+        'Q005': 'Incluindo você, quantas pessoas moram atualmente em sua residência?',
+        'Q006': 'Qual é a renda mensal de sua família? (Some a sua renda com a dos seus familiares.)',
+        'Q007': 'Em sua residência trabalha empregado(a) doméstico(a)?',
+        'Q008': 'Na sua residência tem banheiro?',
+        'Q009': 'Na sua residência tem quartos para dormir?',
+        'Q010': 'Na sua residência tem carro?',
+        'Q011': 'Na sua residência tem motocicleta?',
+        'Q012': 'Na sua residência tem geladeira?',
+        'Q013': 'Na sua residência tem freezer (independente ou segunda porta da geladeira)?',
+        'Q014': 'Na sua residência tem máquina de lavar roupa? (o tanquinho NÃO deve ser considerado)',
+        'Q015': 'Na sua residência tem máquina de secar roupa (independente ou em conjunto com a máquina de lavar roupa)?',
+        'Q016': 'Na sua residência tem forno micro-ondas?',
+        'Q017': 'Na sua residência tem máquina de lavar louça?',
+        'Q018': 'Na sua residência tem aspirador de pó?',
+        'Q019': 'Na sua residência tem televisão em cores?',
+        'Q020': 'Na sua residência tem aparelho de DVD?',
+        'Q021': 'Na sua residência tem TV por assinatura?',
+        'Q022': 'Na sua residência tem telefone celular?',
+        'Q023': 'Na sua residência tem telefone fixo?',
+        'Q024': 'Na sua residência tem computador?',
+        'Q025': 'Na sua residência tem acesso à Internet?'
+        }
+    )
 
-with st.expander('teste'):#Serve para anotação
-    st.write('teste')
+    microdados['Numero Inscricao'] = microdados['Numero Inscricao'].astype(str)
+    microdados['Faixa Etaria'] = microdados['Faixa Etaria'].astype(str)
+    microdados['Sexo'] = microdados['Sexo'].astype(str)
+    microdados['Estado Civil'] = microdados['Estado Civil'].astype(str)
+    microdados['Raca'] = microdados['Raca'].astype(str)
+    microdados['Nacionalidade'] = microdados['Nacionalidade'].astype(str)
+    microdados['Situacao Conclusao EM'] = microdados['Situacao Conclusao EM'].astype(str)
+    microdados['Ano Conclusao EM'] = microdados['Ano Conclusao EM'].astype(str)
+    microdados['Escola'] = microdados['Escola'].astype(str)
+    microdados['Tipo EM'] = microdados['Tipo EM'].apply(lambda x: str(int(x)) if pd.notna(x) else np.nan)
+    microdados['Codigo Municipio Escola'] = microdados['Codigo Municipio Escola'].apply(lambda x: str(int(x)) if pd.notna(x) else np.nan)
+    microdados['Codigo Federacao Escola'] = microdados['Codigo Federacao Escola'].apply(lambda x: str(int(x)) if pd.notna(x) else np.nan)
+    microdados['Treineiro'] = microdados['Treineiro'].astype(str)
+    microdados['Dependencia ADM Escola'] = microdados['Dependencia ADM Escola'].apply(lambda x: str(int(x)) if pd.notna(x)else np.nan)
+    microdados['Localizacao Escola'] = microdados['Localizacao Escola'].apply(lambda x: str(int(x)) if pd.notna(x) else np.nan)
+    microdados['Situacao Funcionamento Escola'] = microdados['Situacao Funcionamento Escola'].apply(lambda x: str(int(x)) if pd.notna(x) else np.nan)
+    microdados['Língua Estrangeira'] = microdados['Língua Estrangeira'].astype(str)
 
-df = pd.DataFrame(
-    [
-        {"command": "st.selectbox", "rating": 4, "is_widget": True},
-        {"command": "st.balloons", "rating": 5, "is_widget": False},
-        {"command": "st.time_input", "rating": 3, "is_widget": True},
-    ]
-)
+    # Carregar Dicionario JSON
+    with open('dicionario.json', 'r', encoding= 'UTF-8') as f:
+        substituicoes = json.load(f)
 
-st.dataframe(df, use_container_width=True)
+    # Aplicar substituicao no DataFrame
+    def aplicar_substituicao(df,substituicoes):
+        for coluna,mapa in substituicoes.items():
+            if coluna in df.columns:
+                df[coluna] = df[coluna].replace(mapa)
+        return df
+
+    df = aplicar_substituicao(microdados, substituicoes)
+    return df
+
+df = carregar_processar_dados()
+st.dataframe(df.head(5))

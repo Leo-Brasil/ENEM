@@ -5,6 +5,9 @@ projeto-enem/
 __pycache__/
 *.pyc
 
+# Cache do Streamlit
+.streamlit/cache/
+
 # Ignorar arquivos de configuração do VS Code (opcional)
 .vscode/
 
@@ -54,3 +57,7 @@ htmlcov/
 
 # Arquivos de configuração pessoal
 *.idea/
+
+# Arquivos de base de dados
+microdados2023.csv
+dicionario.json
