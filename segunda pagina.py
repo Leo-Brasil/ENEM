@@ -7,7 +7,7 @@ import streamlit as st
 import json
 
 @st.cache_data
-def carregar_processar_dados():
+def processar_dados():
     microdados = pd.read_csv('microdados2023.csv', encoding='latin1', sep=';')
     microdados = microdados.drop(columns=[
         'TX_GABARITO_CN',
@@ -125,5 +125,5 @@ def carregar_processar_dados():
     df = aplicar_substituicao(microdados, substituicoes)
     return df
 
-df = carregar_processar_dados()
+df = processar_dados()
 st.dataframe(df.head(5))
