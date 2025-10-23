@@ -10,5 +10,6 @@ def carregar_dados(csv_name):
 
 # Carrega e exibe os dados
 df = carregar_dados('dados_reduzidos.csv')
-st.title("Dados Reduzidos do ENEM 2023")
+st.title("Dados Reduzidos do ENEM 2023 - Alunos Presentes")
+st.header('Prévia dos 50 primeiros resultados')
 st.dataframe(df.head(50))
