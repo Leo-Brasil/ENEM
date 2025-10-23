@@ -31,6 +31,19 @@ Como alternativa para contornar o limite de 100 MB imposto pelo GitHub, realizei
 
 Essa tentativa foi válida e permitiu manter uma amostra mais robusta dos dados no repositório. Para evitar problemas de compatibilidade com o Streamlit Cloud, optei por manter uma versão reduzida e descompactada dos dados no projeto.
 
+---
+
+## Análise complementar em Jupyter Notebook
+
+Além da aplicação em Streamlit, este projeto também conta com uma análise exploratória realizada em Python via Jupyter Notebook. O notebook inclui:
+
+- Tratamento e limpeza dos microdados originais
+- Redução proporcional da base de dados
+- Visualizações com Seaborn e Matplotlib
+- Testes e validações antes da integração com o Streamlit
+
+Você pode encontrar o notebook na pasta raiz do projeto com o nome `microdados.ipynb`. Ele serve como apoio técnico e documentação do processo de preparação dos dados.
+
 ## Como rodar localmente
 
 Para executar o projeto na sua máquina local, siga os passos abaixo:
