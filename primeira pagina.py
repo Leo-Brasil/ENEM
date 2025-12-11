@@ -14,11 +14,6 @@ with cols[2]:
 # Deixando as informações mais distribuidas
 st.set_page_config(layout="wide")
 
-# Função carregar estilo externo
-def carregarestilo(caminho):
-    with open(caminho) as f:
-        st.markdown(f"<style>{f.read()}</style",unsafe_allow_html=True)
-
 # Inicializa o estado da checkbox
 if "mostrar_resultado" not in st.session_state:
     st.session_state.mostrar_resultado = False
@@ -26,9 +21,6 @@ if "mostrar_resultado" not in st.session_state:
 # Função para resetar a checkbox
 def resetar_checkbox():
     st.session_state.mostrar_resultado = False
-
-# Aplicando o CSS
-carregarestilo('estilo.css')
 
 # Carregando Log
 with st.sidebar:
